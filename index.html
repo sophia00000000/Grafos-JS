@@ -1,3 +1,4 @@
+<!-- estructura de la página e inicialización básica-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,18 +7,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VisJS</title>
 </head>
-
+m
+<!-- div con id "mynetwork" que es donde se dibujará el grafo -->
 <div id="mynetwork" style="width: 100%; height: calc(100vh - 300px); border:1px solid black; background: #EEEEEE; ">
 </div>
 
 <body>
+    
+    <div class="control-panel">       
+        <div>
+            <h3>Editar Nodo</h3>
+            <div class="form-group">
+                <label for="node-name">Nombre:</label>
+                <input type="text" id="node-name">
+            </div>
+            <div class="form-group">
+                <label for="node-duration">Duración (días):</label>
+                <input type="number" id="node-duration" min="1">
+            </div>
+            <div class="form-group">
+                <label for="node-cost">Costo:</label>
+                <input type="number" id="node-cost" min="0">
+            </div>
+            <div class="button-group">
+                <button onclick="updateSelectedNode()">Actualizar Nodo</button>
+                <button onclick="addNewNode()">Crear Nuevo Nodo</button>
+            </div>
+        </div>
+        
+        <div>
+            <h3>Editar Arista</h3>
+            <div class="form-group">
+                <label for="edge-value">Valor del Arco:</label>
+                <input type="number" id="edge-value" min="0">
+            </div>
+            <div class="button-group">
+                <button onclick="updateSelectedEdge()">Actualizar Arista</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="mynetwork"></div>
+    
+    <div class="instructions">
+        <h3>Instrucciones de uso:</h3>
+        <ul>
+            <li><strong>Añadir nodo:</strong> Ctrl + clic en un espacio vacío (o use el botón "Crear Nuevo Nodo")</li>
+            <li><strong>Añadir arista:</strong> Seleccione un nodo origen y luego Ctrl + clic en un nodo destino</li>
+            <li><strong>Eliminar nodo:</strong> Shift + clic en el nodo</li>
+            <li><strong>Editar nodo/arista:</strong> Seleccione el elemento y modifique sus propiedades en los formularios</li>
+            <li><strong>Mover nodos:</strong> Arrastre y suelte los nodos</li>
+        </ul>
+    </div>
 
 
-    //incluir a biblioteca vis-network
+    <!-- incluir a biblioteca vis-network -->
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <script type="text/javascript" src="visnetwork.js"></script>
 
-
+    <!-- configurar el grafo inicial -->
     <script>
 
         let nodes = [
@@ -78,10 +126,10 @@
         let container = document.getElementById("mynetwork");
         console.log("Container: ", container)
 
+
+        // create a network VisNetwork
         var network = new VisNetwork(container, nodes, edges, options, debug=true);
-        function on_physics_click(cb) {
-            network.setOptions({ physics: { enabled: is_checked } });
-        }
+
 
     </script>
 
