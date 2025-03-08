@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisJS</title>
+</head>
+
+<div id="mynetwork" style="width: 100%; height: calc(100vh - 300px); border:1px solid black; background: #EEEEEE; ">
+</div>
+
+<body>
+
+
+    //incluir a biblioteca vis-network
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script type="text/javascript" src="visnetwork.js"></script>
+
+
+    <script>
+
+        let nodes = [
+            { id: 1, label: "Start",  x: -156, y: 12 , physics: false},
+            { id: 2, label: "Green",  x: -37,  y: 4 },
+            { id: 3, label: "Yellow", x: 53,   y: -62 },
+            { id: 4, label: "Red",    x: 67,   y: 43 }
+        ];
+        let edges = [
+            { from: 1, to: 2, label: "",     id: "3aabe755-c0f8-4001-9c27-50251aa7f732" },
+            { from: 2, to: 3, label: "next", id: "01e1fd79-7ea6-41a1-8a9a-71ccf76ed5a1" },
+            { from: 3, to: 4, label: "next", id: "ebfb1bdf-fa3a-4025-b702-43d90dfd4848" },
+            { from: 4, to: 2, label: "next", id: "adc5d35b-d37b-430c-96c6-0391172118b1" }
+        ];
+        let options = {
+            nodes :{
+                shape: "ellipse",
+                opacity: 1,
+                mass: 1,
+                borderWidth: 1,
+                borderWidthSelected: 8,
+                widthConstraint: false, // set to number to apply fixed width
+                heightConstraint: false,
+                //color: "red",
+                //font: "20px courier blue", // size, family, color ("20px Helvetica red")
+                margin: 5, // box, circle, database, icon, text
+                size: 25 // for shapes that have label outside
+            },
+            edges: {
+                smooth: {
+                    enabled: true,  // true for curved edges, false for straight
+                    // dynamic, continuous, discrete, diagonalCross, straightCross, horizontal, vertical,
+                    // curvedCW, curvedCCW, curvedBezier
+                    type: "straightCross",
+                    roundness: 0.3,
+                },
+                //añaadir flechas
+                arrows: {
+                    to: {
+                        enabled: true,
+                        type: "arrow",
+                        scaleFactor: 0.5
+                    }
+                }
+            },
+            physics: {
+                enabled: false,
+                solver: "barnesHut", //"repulsion", "hierarchicalRepulsion","forceAtlas2Based"
+                barnesHut: {
+                    gravitationalConstant: -2000,
+                    centralGravity: 0.3,
+                    springLength: 85,
+                    springConstant: 0.04,
+                }
+            }
+        };
+
+        let container = document.getElementById("mynetwork");
+        console.log("Container: ", container)
+
+        var network = new VisNetwork(container, nodes, edges, options, debug=true);
+        function on_physics_click(cb) {
+            network.setOptions({ physics: { enabled: is_checked } });
+        }
+
+    </script>
+
+</body>
+
+
+</html>
