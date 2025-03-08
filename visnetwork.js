@@ -1,7 +1,7 @@
 //##############################################################################
 //
 // VisNetwork class - wrapper for a VisJs network
-//
+//métodos y funcionalidades para manipular el grafo,manejadores de eventos
 //#############################################################################
 
 class VisNetwork {
@@ -11,6 +11,7 @@ class VisNetwork {
     visnetwork = undefined;
     network_options = undefined;
     selected_node = undefined;
+    selected_edge = undefined;
     is_changed = false;
 
     constructor(container, nodes, edges, options, debug=true) {
@@ -109,24 +110,35 @@ class VisNetwork {
     //-------------------------------------------------------------------------
     // add a node at a specified position
     //-------------------------------------------------------------------------
-    add_node(x, y, label = undefined) {
+    add_node(x, y, label = undefined, duration = 1, cost = 0) {
         let id = this.max_id() + 1;
         if (!label) label = `Node ${id}`;
         let node = {
             id: id,
-            label: label,
+            //label: label,
+            label: this.format_node_label(label, duration, cost),
             x: x,
             y: y,
+            task_name: label,
+            duration: duration,
+            cost: cost
         };
         this.nodes.add(node);
         this.is_changed = true;
         return this.nodes.get(node.id);
+    }
+    //-------------------------------------------------------------------------
+    // Format the node label to include duration and cost
+    //-------------------------------------------------------------------------
+    format_node_label(name, duration, cost) {
+        return `${name}\nDuración: ${duration}d\nCosto: ${cost}`;
     }
 
     //-------------------------------------------------------------------------
     // update a node
     //-------------------------------------------------------------------------
     on_update_node(node) {
+        node.label = this.format_node_label(node.task_name, node.duration, node.cost);
         this.nodes.update(node);
         this.is_changed = true;
     }
